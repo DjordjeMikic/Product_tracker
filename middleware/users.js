@@ -23,6 +23,10 @@ export const checkIfUserExists = async (req, res, next) => {
   try {
     const data = await Users.findOne({ email });
     if(data) {
+      if(!data.verified) {
+        res.status(401).json('Uset is not registered');
+        return;
+      }
       next();
       return;
     }

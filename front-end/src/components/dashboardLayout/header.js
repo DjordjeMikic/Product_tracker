@@ -1,19 +1,19 @@
 import { useState } from 'react';
-import { useLocation } from "react-router";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useTitle } from '../../hooks/useTitle';
 import { Header } from "./style";
-import { stripSlashes, capitalizeWords } from "../../helpers";
 import Menu from "./menu";
+import { logout } from '../../store/user/actions';
 
 const HeaderBar = () => {
     const [showMenu, setShowMenu] = useState(false);
     const { userInfo } = useSelector(state => state.user);
-    const { pathname } = useLocation();
-    const header = capitalizeWords(stripSlashes(pathname));
+    const dispatch = useDispatch();
+    const { path } = useTitle();
 
     return (
         <Header className="flex">
-            <h1>{header[header.length - 1].match(/[0-9]/g) ? 'Product' : header[header.length - 1]}</h1>
+            <h1>{path}</h1>
             {userInfo && <p>{userInfo.fullName}</p>}
             <img
                 src="/icons/profile.svg"
@@ -22,7 +22,11 @@ const HeaderBar = () => {
                 width="44"
                 onClick={() => setShowMenu(prevState => !prevState)}
             />
-            {showMenu && <Menu />}
+            {showMenu && (
+                <Menu
+                    logout={() => dispatch(logout())}
+                />
+            )}
         </Header>
     )
 }

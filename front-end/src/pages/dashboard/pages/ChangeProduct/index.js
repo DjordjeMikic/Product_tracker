@@ -1,14 +1,13 @@
-import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Input, Tarea } from "../../../../components/common";
 import { shine } from "../../../../globalStyles/colors";
 import { AddContainer, Left, Right, Flex, Btn } from "../AddProductPage/style";
 import { FolderAdd } from "../../../../svg";
 import DateCard from "../AddProductPage/dateCard";
-import { capitalizeWords, stripSlashes } from "../../../../helpers";
 import { getProduct, updateProduct } from "../../../../store/product/actions";
 import { E, Success } from "../../../../components/Status";
+import { useTitle } from '../../../../hooks/useTitle';
 
 const ChangeProduct = () => {
     const [info, setInfo] = useState({
@@ -19,11 +18,10 @@ const ChangeProduct = () => {
         price: '',
     });
     const [enabled, setEnabled] = useState(false);
-    const { pathname } = useLocation();
-    const header = capitalizeWords(stripSlashes(pathname));
-
+    const { dynamic } = useTitle();
     const { product, error, success } = useSelector(state => state.products);
     const dispatch = useDispatch();
+    const getProductFromDb = useCallback(() => dispatch(getProduct(dynamic)), [dispatch, dynamic]);
 
     const enableSwitch = () => setEnabled(prevState => !prevState);
 
@@ -40,9 +38,8 @@ const ChangeProduct = () => {
     }
 
     useEffect(() => {
-        dispatch(getProduct(header[header.length - 1]));
-        console.log(header[header.length - 1]);
-    }, [dispatch, header]);
+        getProductFromDb();
+    }, [getProductFromDb]);
 
     useEffect(() => {
         if(product) {

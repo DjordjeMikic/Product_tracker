@@ -10,12 +10,16 @@ const SmNav = ({ pathname, setAppended }) => (
             </Arrow>
         </ImageContainer>
         <LinkContainer className="flex" sm="44%">
-            <NavLink to={pathname} exact className="flex" activeClassName="active">
+            <NavLink to={pathname}
+                className={`flex ${(navData) => navData.isActive ? 'active' : ''}`}
+            >
                 <img src="/icons/bag.svg" alt="Bag" />
             </NavLink>
         </LinkContainer>
         <LinkContainer className="flex" sm="44%">
-            <NavLink to={`${pathname}profile`} className="flex" activeClassName="active">
+            <NavLink to={`${pathname}profile`} 
+                className={`flex ${(navData) => navData.isActive ? 'active' : ''}`}
+            >
                 <img src="/icons/profile.svg" alt="" />
             </NavLink>
         </LinkContainer>

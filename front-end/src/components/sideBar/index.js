@@ -31,14 +31,18 @@ const SideBar = () => {
             <Desc>Pages</Desc>
 
             <LinkContainer className="flex">
-                <NavLink to="/dashboard/products" className="flex" activeClassName="active">
+                <NavLink to="/dashboard/products"
+                    className={`flex ${(navData) => navData.isActive ? 'active' : ''}`}
+                >
                     <img src="/icons/bag.svg" alt="Bag" />
                     Products
                 </NavLink>
             </LinkContainer>
 
             <LinkContainer className="flex">
-                <NavLink to="/dashboard/profile" className="flex" activeClassName="active">
+                <NavLink to="/dashboard/profile"
+                    className={`flex ${(navData) => navData.isActive ? 'active' : ''}`}
+                >
                     <img src="/icons/profile.svg" alt="" />
                     Profile
                 </NavLink>

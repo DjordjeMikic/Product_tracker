@@ -13,11 +13,13 @@ import ProductPage from './pages/dashboard/pages/ProductPage';
 import NotFound from './pages/NotFound';
 import Modal from './components/Modal';
 import ChangeProduct from './pages/dashboard/pages/ChangeProduct';
+import VerifyAccount from './pages/Verify';
 
 const App = () => (
   <Routes>
     <Route path="/" exact element={<Login />} />
     <Route path="/register" element={<Register />} />
+    <Route path="/verify/:id" element={<VerifyAccount />} />
     <Route path="/dashboard" element={<Dashboard />}>
       <Route path="/dashboard/products" element={<ProductsPage />} />
       <Route path="/dashboard/profile" element={<ProfilePage />} />

@@ -30,7 +30,6 @@ export const getProducts = () => async (dispatch) => {
         if(res.status === 200) {
             dispatch(setProducts(res.data));
         }
-        console.log(res);
     } catch(e) {
         throw new Error(e);
     }

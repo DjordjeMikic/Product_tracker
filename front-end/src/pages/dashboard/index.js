@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Navigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { getProducts } from "../../store/product/actions";
 import DashboardLayout from "../../components/dashboardLayout";
+import { useAuth } from '../../hooks/useAuth';
 
 const Dashboard = () => {
+    const { login } = useAuth();
     const dispatch = useDispatch();
     
     useEffect(() => {        
@@ -13,7 +15,7 @@ const Dashboard = () => {
     
     return (
         <DashboardLayout>
-            <Outlet />
+            {login ? <Outlet /> : <Navigate to="/" />}
         </DashboardLayout>
     )
 }

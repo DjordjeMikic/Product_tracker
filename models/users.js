@@ -17,6 +17,14 @@ const Users = new Schema({
   password: {
     ...obj,
     min: 4
+  },
+  verifyToken: {
+    type: String,
+    default: null    
+  },
+  verified: {
+    type: Boolean,
+    default: false
   }
 });
 

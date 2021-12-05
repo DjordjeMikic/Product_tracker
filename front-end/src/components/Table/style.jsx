@@ -2,9 +2,10 @@ import styled from 'styled-components';
 import { black, light, lightness, metal } from '../../globalStyles/colors';
 
 export const TableContainer = styled.table`
-    max-height: 91%;
+    max-height: 91vh;
     width: 100%;
     border-collapse: collapse;
+    /* overflow: auto; */
     margin-top: 2%;
 `;
 

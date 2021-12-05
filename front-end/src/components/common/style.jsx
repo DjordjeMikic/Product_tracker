@@ -120,3 +120,11 @@ export const Show = styled.div`
   right: ${props => props.enabled && '1px'};
   z-index: 2;
 `;
+
+export const DiscountContainer = styled.div`
+  border-radius: 9px;
+  padding: 4px 11px;
+  background-color: ${props => props && props.bgColor};
+  color: ${props => props && props.color};
+  position: relative;
+`

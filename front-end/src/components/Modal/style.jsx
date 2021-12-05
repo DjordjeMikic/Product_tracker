@@ -27,6 +27,12 @@ export const ModalContent = styled.div`
     h1 {
         color: ${blue}; 
     }
+
+    svg {
+        height: 50%;
+        width: 50%;
+        z-index: 1;
+    }
 `;
 
 export const Mark = styled.span`
@@ -39,6 +45,7 @@ export const Button = styled.button`
     border: none;
     outline: none;
     border-radius: 9px;
+    cursor: pointer;
     color: ${props => props && props.color};
     background-color: ${props => props.bgColor ? props.bgColor : lightness};
     transition: all 0.4s;

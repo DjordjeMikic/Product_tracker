@@ -5,7 +5,7 @@ import { TableContainer } from "./style";
 import TableBody from "./TableBody";
 import TableHeader from "./TableHeader";
 
-const Table = () => {
+const Table = ({ search }) => {
     const { products } = useSelector(state => state);
     const dispatch = useDispatch();
 
@@ -24,7 +24,7 @@ const Table = () => {
     return (
         <TableContainer>
             <TableHeader checkAll={e => checkAll(e)} />
-            <TableBody products={products.products} />
+            <TableBody search={search} products={products.products} />
         </TableContainer>
     )
 }

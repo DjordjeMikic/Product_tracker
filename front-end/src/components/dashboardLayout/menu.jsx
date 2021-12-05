@@ -1,8 +1,8 @@
 import { Line, MenuContainer } from "./style";
 
-const Menu = () => (
+const Menu = ({ logout }) => (
     <MenuContainer className="flex column">
-        <Line className="flex">Logout</Line>
+        <Line className="flex" onClick={logout}>Logout</Line>
     </MenuContainer>
 )
 

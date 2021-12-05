@@ -4,9 +4,10 @@ import { Link, useLocation } from 'react-router-dom';
 import { capitalizeWords, stripSlashes } from '../../../../helpers';
 import { darkGrey, red, shine, success } from '../../../../globalStyles/colors';
 import { getDate } from '../../../../helpers';
-import { ProductContainer, ImageContainer, Row, DataContainer, Property, BtnBox, Desc } from './style';
 import { Box, CheckMark, Close, Euro, Pen, Trash } from '../../../../svg';
 import { getProduct } from '../../../../store/product/actions';
+import { ProductContainer, ImageContainer, Row, DataContainer, Property, BtnBox, Desc } from './style';
+import { JUST_HOST } from '../../../../data';
 
 const ProductPage = () => {
     const [d, setD] = useState(getDate());
@@ -35,7 +36,9 @@ const ProductPage = () => {
         <ProductContainer className="flex column">
             
             <ImageContainer>
-                <img src="/namestaj.jpg" alt="" />
+                {!product.image ? (
+                    <img src="/namestaj.jpg" alt="" />) :
+                    <img src={`${JUST_HOST}/${product.image}`} alt={product.image} />}
             </ImageContainer>
             
             <Row className="flex">

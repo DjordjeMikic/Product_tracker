@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
-import { setError, setSuccess } from '../store/product/actions';
+import { setError, setSuccess } from '../store/user/actions';
 
-export const useClear = () => {
+export const useMe = () => {
     const dispatch = useDispatch();
 
     const clearError = () => {

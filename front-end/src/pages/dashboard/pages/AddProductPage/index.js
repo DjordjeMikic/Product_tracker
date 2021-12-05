@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDropzone } from 'react-dropzone';
 import { Input, Tarea } from '../../../../components/common';
@@ -7,8 +8,10 @@ import { AddContainer, Left, Right, Flex, Btn, FileDropContainer } from "./style
 import { FolderAdd } from "../../../../svg";
 import DateCard from "./dateCard";
 import { shine } from "../../../../globalStyles/colors";
-import axios from '../../../../store/axiosConf';
+import axios from 'axios';
 import { setError, setSuccess } from "../../../../store/product/actions";
+import { HOST } from '../../../../data';
+import { useClear } from '../../../../hooks/useClear';
 
 const AddProductPage = () => {
     const [info, setInfo] = useState({
@@ -21,11 +24,13 @@ const AddProductPage = () => {
     const [enabled, setEnabled] = useState(false);
     const [img, setImg] = useState(null);
     const formData = useRef(null);
-    const { error, success } = useSelector(state => state.product);
+    const { products } = useSelector(state => state);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { clearBoth } = useClear();
 
     const onDrop = useCallback((acceptedFile) => {
-        formData.current.append('image', acceptedFile);
+        formData.current.append('image', acceptedFile[0]);
         setImg(URL.createObjectURL(new Blob(acceptedFile, {type: "image/jpeg/jpg/png"})));
     }, []);
 
@@ -37,7 +42,6 @@ const AddProductPage = () => {
 
     const enableSwitch = () => {
         setEnabled(prevState => !prevState);
-        console.log(enabled);
     };
 
     const onChange = (a) => {
@@ -53,17 +57,20 @@ const AddProductPage = () => {
         formData.current.append('discount', enabled);
 
         try {            
-            let res = await axios({
+            const res = await axios({
                 method: 'post',
-                url: '/products/add',
+                url: `${HOST}/products/add`,
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': `multipart/form-data; boundary=${formData._boundary}`
                 },
                 data: formData.current
             });
-            if(res.status === 201) {                
-                console.log('Success');
-                dispatch(setSuccess(res.data));
+            if(res.status === 201) {
+                dispatch(setSuccess(res.data));                
+                setTimeout(() => {
+                    clearBoth();
+                    navigate('/dashboard/products')
+                }, 6000);
             }
         } catch(e) {
             dispatch(setError(e));
@@ -71,9 +78,9 @@ const AddProductPage = () => {
     }
 
     return (
-        <AddContainer onSubmit={onSubmit} className="flex">
-            {error && <E />}
-            {success && <Success />}
+        <AddContainer onSubmit={onSubmit} enctype="multipart/form-data" className="flex">
+            {products.error && <E />}
+            {products.success && <Success />}
             <Left className="flex column">
                 <Input
                     info="Product name"
@@ -93,7 +100,7 @@ const AddProductPage = () => {
                 <FileDropContainer className="flex column" active={isDragActive} { ...getRootProps() }>
                     <input {...getInputProps()} />
                     {img && <img src={img} alt="" />}
-                    {isDragActive ? <p>Put image</p> : <h4>Upload product image</h4>}
+                    {isDragActive ? <p>Put image</p> : img ? '' : <h4>Upload product image</h4>}
                 </FileDropContainer>
             </Left>
             <Right>

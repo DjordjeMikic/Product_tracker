@@ -18,8 +18,7 @@ const Products = new Schema({
   },
   productKey: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   discount: {
     type: Boolean,

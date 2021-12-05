@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { PasswordContainer, OtherOption } from './style';
 import StartLayout from '../../components/StartLayout';
 import Form from '../../components/Form';
@@ -10,8 +11,10 @@ import {
   red,
   success
 } from '../../globalStyles/colors';
-
 import axios from '../../store/axiosConf';
+import { setError, setSuccess } from '../../store/user/actions';
+import { UserE, UserSuccess } from '../../components/Status';
+import { useMe } from '../../hooks/useMe';
 
 const Register = () => {
   const [info, setInfo] = useState({
@@ -21,6 +24,12 @@ const Register = () => {
     confirmPassword: ''
   });
   const [same, setSame] = useState(null);
+
+  const { user } = useSelector(state => state);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { clearBoth } = useMe();
 
   const onBlur = () => {
     if(info.password === info.confirmPassword) {
@@ -51,6 +60,7 @@ const Register = () => {
         url: '/users/register',
         data: info
       });
+
       if(res.status === 201) {
         setInfo({
           fullName: '',
@@ -58,9 +68,16 @@ const Register = () => {
           password: '',
           confirmPassword: ''
         });
+
+        dispatch(setSuccess(res.data));
+
+        setTimeout(() => {
+          clearBoth();
+          navigate('/');
+        })
       }
     } catch(e) {
-      throw new Error(e);
+      dispatch(setError(e));
     }
   }
 
@@ -70,7 +87,8 @@ const Register = () => {
         onSubmit={onSubmit}
         bannerText="Sign Up to WireS"
       >
-
+        {user.error && <UserE />}
+        {user.success && <UserSuccess />}
         <Input
           type="text"
           info="Full Name"
